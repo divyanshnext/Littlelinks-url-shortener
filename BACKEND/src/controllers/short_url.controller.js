@@ -2,11 +2,12 @@
 // It provides a centralized way to handle errors and send appropriate responses to the client.
 import { createShortUrlWithoutUser } from "../services/short_url.service.js"
 import { getShortUrl } from "../dao/short_url.js"
+import wrapAsync from "../utils/tryCatchWrapper.js"
 
 export const createShortUrl = wrapAsync(async(req,res) => {
     const {url} = req.body
     const shortUrl = await createShortUrlWithoutUser(url)
-    res.send(process.env.APP_URL + shortUrl)
+    res.status(200).json({shortUrl : process.env.APP_URL + shortUrl})
 })
 
 export const redirectFromShortUrl = wrapAsync(async(req, res) => {
